@@ -6,9 +6,10 @@ import {
   Code2,
   Bot,
   Layers,
-  Rss,
   ExternalLink,
+  RssIcon,
 } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -24,24 +25,28 @@ const projects = [
     description: "Tiny e-commerce platform for small creators",
     tags: ["Web", "SaaS"],
     year: "2024",
+    link: "https://inkle.me",
   },
   {
     name: "Townhall",
     description: "Hyperlocal social network for neighborhoods and communities",
     tags: ["Mobile", "App"],
     year: "2022",
+    link: "https://townhall.ae",
   },
   {
     name: "Kyoshi",
     description: "AI-powered talent aquisition platform for companies and job seekers",
     tags: ["Web", "SaaS"],
     year: "2025",
+    link: "https://kyoshi.me",
   },
   {
     name: "Eggbot",
     description: "An open-source, low-cost, desktop egg robot powered by ESP32",
     tags: ["Hardware", "Robotics"],
-    year: "2023",
+    year: "2024",
+    link: "",
   }
 ];
 
@@ -58,7 +63,7 @@ export default function Home() {
 
           <p className="text-muted leading-relaxed max-w-xl">
             Building functional hardware and software. Focused on performance,
-            accessibility, and clean code. Currently working on <a href="https://inkle.me" className="hover:opacity-70">
+            accessibility, and clean code. Currently working on <a href="https://inkle.me" className="hover:opacity-70 underline decoration-dotted text-pink-500">
               inkle.me
             </a>
           </p>
@@ -99,35 +104,40 @@ export default function Home() {
                 <ExternalLink size={12} strokeWidth={1.5} />
                 <span className="text-xs uppercase tracking-wider">Social</span>
               </div>
-              <div className="flex gap-3">
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm hover:opacity-70"
-                >
-                  GH
-                </a>
-                <Link
-                  href="/blog"
-                  className="text-sm hover:opacity-70"
-                >
-                  <Rss size={14} className="inline" />
-                </Link>
-              </div>
+              <div className="flex gap-3 items-center mt-1">
+            <a
+              href="https://github.com/azrael07"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm hover:opacity-70"
+              aria-label="GitHub"
+            >
+              <FaGithub size={14} />
+            </a>
+            <Link
+              href="/blog"
+              className="text-sm hover:opacity-70"
+              aria-label="Blog RSS"
+            >
+              <RssIcon size={14} />
+            </Link>
+          </div>
+       
             </div>
           </div>
         </section>
 
         <section className="mt-12 pt-8 border-t">
           <h2 className="text-xs uppercase tracking-widest text-muted mb-6">
-            Selected Work
+            Work
           </h2>
           <div className="space-y-0">
             {projects.map((project) => (
               <a
                 key={project.name}
-                href="#"
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group block py-4 border-b last:border-b-0"
               >
                 <div className="flex items-start justify-between gap-4">
