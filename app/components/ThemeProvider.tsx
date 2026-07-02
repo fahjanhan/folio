@@ -13,52 +13,61 @@ type Theme = "light" | "dark";
 type ThemeContextType = {
   theme: Theme;
   toggleTheme: () => void;
+  mounted: boolean;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// Reads whatever the inline script (see layout.tsx) already applied to <html>,
-// so this matches the DOM from the very first client render.
-function getInitialTheme(): Theme {
-  if (typeof document === "undefined") return "light";
-  return document.documentElement.classList.contains("dark") ? "dark" : "light";
-}
-
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  // Always start with "light" on both server AND first client render,
+  // so hydration never mismatches. The real theme (possibly already
+  // applied to <html> by the inline script) is picked up in the effect
+  // below, which only runs on the client after hydration is done.
+  const [theme, setTheme] = useState<Theme>("light");
+  const [mounted, setMounted] = useState(false);
 
-  // Only auto-follow the OS theme if the user hasn't explicitly picked one.
-  // If they have (localStorage has a value), we respect their choice and
-  // never silently override it just because the system theme changed.
   useEffect(() => {
-    const stored = localStorage.getItem("theme");
-    if (stored === "light" || stored === "dark") return;
+    // Sync React state to whatever the inline script already put on <html>.
+    const isDark = document.documentElement.classList.contains("dark");
+    setTheme(isDark ? "dark" : "light");
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
-    const applySystemTheme = (matches: boolean) => {
-      const next: Theme = matches ? "dark" : "light";
+    const handleChange = (e: MediaQueryListEvent) => {
+      let stored: string | null = null;
+      try {
+        stored = localStorage.getItem("theme");
+      } catch (err) {}
+
+      if (stored === "light" || stored === "dark") return;
+
+      const next: Theme = e.matches ? "dark" : "light";
       document.documentElement.classList.toggle("dark", next === "dark");
       setTheme(next);
     };
 
-    const handleChange = (e: MediaQueryListEvent) => applySystemTheme(e.matches);
     mediaQuery.addEventListener("change", handleChange);
-
     return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
+  }, [mounted]);
 
   const toggleTheme = useCallback(() => {
     setTheme((prev) => {
       const next: Theme = prev === "light" ? "dark" : "light";
       document.documentElement.classList.toggle("dark", next === "dark");
-      localStorage.setItem("theme", next);
+      try {
+        localStorage.setItem("theme", next);
+      } catch (e) {}
       return next;
     });
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, mounted }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -67,7 +76,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (!context) {
-    return { theme: "light" as const, toggleTheme: () => {} };
+    return { theme: "light" as const, toggleTheme: () => {}, mounted: true };
   }
   return context;
 }

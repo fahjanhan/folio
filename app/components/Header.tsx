@@ -13,7 +13,7 @@ const navItems = [
 
 export default function Header() {
   const pathname = usePathname();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, mounted } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -44,7 +44,11 @@ export default function Header() {
               className="p-2 text-muted hover:text-fg transition-colors"
               aria-label="Toggle theme"
             >
-              {theme === "dark" ? (
+              {!mounted ? (
+                // Same footprint as the icons below — renders identically
+                // on server and first client pass, so hydration matches.
+                <div style={{ width: 16, height: 16 }} />
+              ) : theme === "dark" ? (
                 <Sun size={16} strokeWidth={1.5} />
               ) : (
                 <Moon size={16} strokeWidth={1.5} />

@@ -30,11 +30,21 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function () {
+                var stored = null;
                 try {
-                  var stored = localStorage.getItem("theme");
-                  var isDark =
+                  stored = localStorage.getItem("theme");
+                } catch (e) {}
+
+                var isDark = false;
+                try {
+                  isDark =
                     stored === "dark" ||
                     (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
+                } catch (e) {
+                  isDark = false;
+                }
+
+                try {
                   document.documentElement.classList.toggle("dark", isDark);
                 } catch (e) {}
               })();
@@ -45,7 +55,6 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col antialiased`}>
         <ThemeProvider>
           <div className="flex flex-col min-h-screen">
-            
             {children}
           </div>
         </ThemeProvider>

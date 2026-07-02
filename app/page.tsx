@@ -63,7 +63,7 @@ export default function Home() {
 
           <p className="text-muted leading-relaxed max-w-xl">
             Building functional hardware and software. Focused on performance,
-            accessibility, and clean code. Currently working on <a href="https://inkle.me" className="hover:opacity-70 underline decoration-dotted text-pink-500">
+            accessibility, and clean code. Currently working on <a href="https://inkle.me" className="hover:opacity-70 !text-pink-400 font-medium">
               inkle.me
             </a>
           </p>
