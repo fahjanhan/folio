@@ -8,6 +8,7 @@ import {
   Layers,
   ExternalLink,
   RssIcon,
+  Rocket,
 } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import Header from "./components/Header";
@@ -16,6 +17,7 @@ import Footer from "./components/Footer";
 const skills = [
   { icon: Code2, label: "Software" },
   { icon: Bot, label: "Robotics" },
+  { icon: Rocket, label: "Rockets" },
   { icon: Layers, label: "Systems" },
 ];
 
@@ -27,27 +29,28 @@ const projects = [
     year: "2024",
     link: "https://inkle.me",
   },
-  {
-    name: "Townhall",
-    description: "Hyperlocal social network for neighborhoods and communities",
-    tags: ["Mobile", "App"],
-    year: "2022",
-    link: "https://townhall.ae",
-  },
+
   {
     name: "Kyoshi",
     description: "AI-powered talent aquisition platform for companies and job seekers",
     tags: ["Web", "SaaS"],
-    year: "2025",
+    year: "2024",
     link: "https://kyoshi.me",
   },
   {
     name: "Eggbot",
     description: "An open-source, low-cost, desktop egg robot powered by ESP32",
     tags: ["Hardware", "Robotics"],
-    year: "2024",
+    year: "2023",
     link: "",
-  }
+  },
+    {
+    name: "Townhall",
+    description: "Hyperlocal social network for neighborhoods and communities",
+    tags: ["Mobile", "App"],
+    year: "2022",
+    link: "https://townhall.ae",
+  },
 ];
 
 export default function Home() {
@@ -62,8 +65,10 @@ export default function Home() {
           </div>
 
           <p className="text-muted leading-relaxed max-w-xl">
-            Building functional hardware and software. Focused on performance,
-            accessibility, and clean code. Currently working on <a href="https://inkle.me" className="hover:opacity-70 !text-pink-400 font-medium">
+            Building hardware and software with an emphasis on functional engineering. Interested in software, robotics, rocketry and embedded systems.
+            <br />
+            <br />
+            Currently working on <a href="https://inkle.me" className="hover:opacity-70 !text-pink-400 font-medium">
               inkle.me
             </a>
           </p>
