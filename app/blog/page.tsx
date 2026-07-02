@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Clock, Tag } from "lucide-react";
+import { Clock, Tag } from "lucide-react";
 import Header from "../components/Header";
 import { getPosts } from "@/lib/posts";
 import Footer from "../components/Footer";
@@ -8,38 +8,33 @@ export default async function BlogPage() {
   const posts = await getPosts();
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 py-12">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-fg transition-colors mb-8"
-        >
-          <ArrowLeft size={12} strokeWidth={1.5} />
-          <span>Back</span>
-        </Link>
-
+      <main className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-12">
         <section>
           <div className="mb-8">
-            <h1 className="text-xl font-medium tracking-tight">Writing</h1>
+            <h1 className="text-xl font-medium tracking-tight">Feeds</h1>
             <p className="text-muted text-sm mt-1">
               {posts.length} {posts.length === 1 ? "post" : "posts"}
             </p>
           </div>
 
-          <div className="space-y-0">
+          <div className="space-y-4">
             {posts.map((post) => (
-              <article key={post.id} className="border-b last:border-b-0">
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="group block py-5"
-                >
+              <article
+                key={post.id}
+                className="group border border-border hover:border-fg/20  transition-all duration-200"
+              >
+                <Link href={`/blog/${post.slug}`} className="block p-5">
                   <div className="flex items-start justify-between gap-4">
-                    <div className="space-y-2">
+                    <div className="space-y-2 flex-1 min-w-0">
                       <h2 className="text-sm font-medium group-hover:opacity-70 transition-opacity">
                         {post.title}
                       </h2>
-                      <div className="flex flex-wrap items-center gap-3 text-muted">
+                      <p className="text-muted text-xs leading-relaxed line-clamp-2">
+                        {post.excerpt}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-3 text-muted pt-1">
                         <div className="flex items-center gap-1">
                           <Clock size={10} strokeWidth={1.5} />
                           <span className="text-xs">{post.date}</span>
@@ -56,13 +51,10 @@ export default async function BlogPage() {
                         )}
                       </div>
                     </div>
-                    <span className="text-muted opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-muted opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0 mt-0.5">
                       →
                     </span>
                   </div>
-                  <p className="text-muted text-xs mt-3 leading-relaxed">
-                    {post.excerpt}
-                  </p>
                 </Link>
               </article>
             ))}
@@ -70,6 +62,6 @@ export default async function BlogPage() {
         </section>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

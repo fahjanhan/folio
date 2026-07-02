@@ -27,7 +27,7 @@ export default async function BlogPostPage({ params }: Props) {
           className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-fg transition-colors"
         >
           <ArrowLeft size={12} strokeWidth={1.5} />
-          <span>Writing</span>
+          <span>Feeds</span>
         </Link>
 
         <article>
