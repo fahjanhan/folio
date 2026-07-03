@@ -76,7 +76,7 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-1 h-full">
+          <div className="flex items-center gap-5 h-full">
             <div className="relative flex items-center h-full" ref={themeMenuRef}>
               <button
                 onClick={() => setThemeMenuOpen((v) => !v)}
