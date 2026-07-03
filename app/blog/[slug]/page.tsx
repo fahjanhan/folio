@@ -24,7 +24,7 @@ export default async function BlogPostPage({ params }: Props) {
       <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-12">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-fg transition-colors bg-white/5 p-1 rounded-sm"
+          className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-fg transition-colors bg-gray-500/10 p-1 rounded-sm"
         >
           <ArrowLeft size={12} strokeWidth={1.5} />
           <span>Feeds</span>
@@ -43,14 +43,21 @@ export default async function BlogPostPage({ params }: Props) {
                 <span className="text-xs">{post.readingTime} min read</span>
               </div>
               {post.tags.length > 0 && (
-                <div className="flex items-center gap-1.5">
-                  <Tag size={12} strokeWidth={1.5} />
-                  <span className="text-xs">{post.tags.join(", ")}</span>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <Tag size={12} strokeWidth={1.5} className="text-muted-foreground" />
+                  {post.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-xs px-1 py-0.5 rounded-sm border border-border"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               )}
             </div>
           </header>
-          <div className="mt-8">
+          <div className="mt-8 text-[15px] leading-relaxed">
             <NotionRenderer blocks={post.blocks} />
           </div>
         </article>

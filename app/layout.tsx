@@ -26,31 +26,38 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function () {
-                var stored = null;
-                try {
-                  stored = localStorage.getItem("theme");
-                } catch (e) {}
+  <script
+  dangerouslySetInnerHTML={{
+    __html: `
+      (function () {
+        var stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch (e) {}
 
-                var isDark = false;
-                try {
-                  isDark =
-                    stored === "dark" ||
-                    (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
-                } catch (e) {
-                  isDark = false;
-                }
+        var validThemes = ["light", "dark", "warm-light", "warm-dark"];
+        var theme = stored && validThemes.indexOf(stored) !== -1 ? stored : null;
 
-                try {
-                  document.documentElement.classList.toggle("dark", isDark);
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
+        if (!theme) {
+          try {
+            theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+          } catch (e) {
+            theme = "light";
+          }
+        }
+
+        var isDark = theme === "dark" || theme === "warm-dark";
+
+        try {
+          document.documentElement.setAttribute("data-theme", theme);
+          document.documentElement.classList.toggle("dark", isDark);
+        } catch (e) {}
+      })();
+    `,
+  }}
+/>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col antialiased`}>
         <ThemeProvider>
