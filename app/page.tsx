@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 py-12">
+      <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-12">
         <section className="space-y-8">
           <div>
             <h1 className="text-2xl font-medium tracking-tight">Burhan Amjad</h1>
@@ -69,8 +69,12 @@ export default function Home() {
             <br />
             <br />
             Currently working on <a href="https://inkle.me" className="hover:opacity-70 !text-pink-400 font-medium">
-              inkle.me
+              inkle.me,
             </a>
+         &nbsp;send me a Hi at <a href="mailto:burhan@inkle.me" className="hover:opacity-70 !text-blue-400 font-medium">
+              burhan@inkle.me,
+            </a>
+             &nbsp;I would to hear from you!
           </p>
 
           <div className="flex flex-wrap gap-2">
@@ -100,7 +104,7 @@ export default function Home() {
                 <Mail size={12} strokeWidth={1.5} />
                 <span className="text-xs uppercase tracking-wider">Contact</span>
               </div>
-              <a href="mailto:burhan@example.com" className="text-sm hover:opacity-70">
+              <a href="mailto:burhan@inkle.me" className="text-sm hover:opacity-70">
                 burhan@inkle.me
               </a>
             </div>
@@ -114,14 +118,14 @@ export default function Home() {
               href="https://github.com/azrael07"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm hover:opacity-70"
+              className="!text-gray-700 text-sm hover:opacity-70"
               aria-label="GitHub"
             >
               <FaGithub size={14} />
             </a>
             <Link
               href="/blog"
-              className="text-sm hover:opacity-70"
+              className="!text-gray-700 text-sm hover:opacity-70"
               aria-label="Blog RSS"
             >
               <RssIcon size={14} />

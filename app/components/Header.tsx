@@ -18,7 +18,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-bg/80 backdrop-blur-sm border-b">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-12">
           <Link href="/" className="text-sm font-medium tracking-tight">
             BA

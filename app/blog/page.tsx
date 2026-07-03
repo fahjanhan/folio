@@ -12,7 +12,7 @@ export default async function BlogPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-12">
+      <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-12">
         <section>
           <div className="mb-8">
             <h1 className="text-xl font-medium tracking-tight">Feeds</h1>

@@ -19,12 +19,12 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 py-12">
+      <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-12">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-fg transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-fg transition-colors bg-white/5 p-1 rounded-sm"
         >
           <ArrowLeft size={12} strokeWidth={1.5} />
           <span>Feeds</span>
@@ -56,6 +56,6 @@ export default async function BlogPostPage({ params }: Props) {
         </article>
       </main>
      <Footer />
-    </>
+    </div>
   );
 }
