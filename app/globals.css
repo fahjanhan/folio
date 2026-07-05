@@ -122,7 +122,7 @@ button:hover {
 }
 
 /* Townsquare */
-/* 
+
 #townsquare-root#townsquare-root {
   --scene: #dde4e4;
   --ground-fill: #edf0f2;
@@ -172,10 +172,30 @@ button:hover {
   --text: var(--ink);
   --muted: var(--ink);
   }
-} */
+}
 
 #townsquare-root *,
 #townsquare-count * {
   border-radius: 10px !important;
   box-shadow: none !important;
+}
+
+/* Light */
+#townsquare-count .ts-counter,
+#townsquare-count .ts-counter *,
+#townsquare-count .ts-counter__label {
+  color: #000 !important;
+}
+
+/* Dark */
+[data-theme="dark"] #townsquare-count .ts-counter,
+[data-theme="dark"] #townsquare-count .ts-counter *,
+[data-theme="dark"] #townsquare-count .ts-counter__label {
+  color: #fff !important;
+}
+
+[data-theme="warm-dark"] #townsquare-count .ts-counter,
+[data-theme="warm-dark"] #townsquare-count .ts-counter *,
+[data-theme="warm-dark"] #townsquare-count .ts-counter__label {
+  color: #fff !important;
 }
