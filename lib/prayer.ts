@@ -32,6 +32,9 @@ export type TodayPrayers = {
 
 const PRAYER_NAMES = ["Fajr", "Shurooq", "Duhur", "Asr", "Maghrib", "Isha"] as const;
 
+const TIMEZONE = "Asia/Dubai";
+const TZ_OFFSET = "+04:00";
+
 // Folder containing prayers-YYYY-MM.json files, e.g. app/data/prayers-2026-07.json
 const DATA_DIR = path.join(process.cwd(), "app", "data");
 const FILE_PATTERN = /^prayers-\d{4}-\d{2}\.json$/;
@@ -74,32 +77,37 @@ function toTimestamp(dateStr: string, timeStr: string): number {
   let hours = hoursRaw % 12;
   if (meridiem?.toUpperCase() === "PM") hours += 12;
 
-  const [year, month, day] = dateStr.split("-").map(Number);
-  return new Date(year, month - 1, day, hours, minutesRaw, 0, 0).getTime();
+  return new Date(
+    `${dateStr}T${String(hours).padStart(2, "0")}:${String(minutesRaw).padStart(2, "0")}:00${TZ_OFFSET}`
+  ).getTime();
 }
 
 /**
  * Returns today's date as YYYY-MM-DD in local time.
  */
 function todayKey(): string {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, "0");
-  const d = String(now.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  return formatter.format(new Date());
+}
+
+function dateToTimestamp(dateStr: string): number {
+  return new Date(`${dateStr}T00:00:00${TZ_OFFSET}`).getTime();
 }
 
 export async function getPrayerTimes(): Promise<TodayPrayers> {
   const data = loadAllPrayerData();
   const key = todayKey();
 
-  // Fall back to the closest available date if today isn't in the dataset
-  // (keeps the page from breaking outside the available months).
   const todayEntry =
     data.find((d) => d.date === key) ??
     data.reduce((closest, d) =>
-      Math.abs(new Date(d.date).getTime() - new Date(key).getTime()) <
-      Math.abs(new Date(closest.date).getTime() - new Date(key).getTime())
+      Math.abs(dateToTimestamp(d.date) - dateToTimestamp(key)) <
+      Math.abs(dateToTimestamp(closest.date) - dateToTimestamp(key))
         ? d
         : closest
     );
