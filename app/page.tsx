@@ -21,37 +21,37 @@ const skills = [
   { icon: Layers, label: "Systems" },
 ];
 
-const projects = [
-  {
-    name: "Inkle",
-    description: "Tiny e-commerce platform for small creators",
-    tags: ["Web", "SaaS"],
-    year: "2024",
-    link: "https://inkle.me",
-  },
+// const projects = [
+//   {
+//     name: "Inkle",
+//     description: "Tiny e-commerce platform for small creators",
+//     tags: ["Web", "SaaS"],
+//     year: "2024",
+//     link: "https://inkle.me",
+//   },
 
-  {
-    name: "Kyoshi",
-    description: "AI-powered talent aquisition platform for companies and job seekers",
-    tags: ["Web", "SaaS"],
-    year: "2024",
-    link: "https://kyoshi.me",
-  },
-  {
-    name: "Eggbot",
-    description: "An open-source, low-cost, desktop egg robot powered by ESP32",
-    tags: ["Hardware", "Robotics"],
-    year: "2023",
-    link: "",
-  },
-    {
-    name: "Townhall",
-    description: "Hyperlocal social network for neighborhoods and communities",
-    tags: ["Mobile", "App"],
-    year: "2022",
-    link: "https://townhall.ae",
-  },
-];
+  // {
+  //   name: "Kyoshi",
+  //   description: "AI-powered talent aquisition platform for companies and job seekers",
+  //   tags: ["Web", "SaaS"],
+  //   year: "2024",
+  //   link: "https://kyoshi.me",
+  // },
+  // {
+  //   name: "Eggbot",
+  //   description: "An open-source, low-cost, desktop egg robot powered by ESP32",
+  //   tags: ["Hardware", "Robotics"],
+  //   year: "2023",
+  //   link: "",
+  // },
+  //   {
+  //   name: "Townhall",
+  //   description: "Hyperlocal social network for neighborhoods and communities",
+  //   tags: ["Mobile", "App"],
+  //   year: "2022",
+  //   link: "https://townhall.ae",
+  // },
+// ];
 
 export default function Home() {
   return (
@@ -60,21 +60,19 @@ export default function Home() {
       <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-12">
         <section className="space-y-8">
           <div>
-            <h1 className="text-2xl font-medium tracking-tight">Burhan Amjad</h1>
-            <p className="text-muted text-sm mt-1">Computer Scientist & Designer</p>
+            <h1 className="text-2xl font-medium tracking-tight">Burhan</h1>
+            <p className="text-muted text-sm mt-1">Computer Scientist</p>
           </div>
 
           <p className="text-muted leading-relaxed max-w-xl">
             Building hardware and software with an emphasis on functional engineering. Interested in software, robotics, rocketry and embedded systems.
-            <br />
-            <br />
-            Currently working on <a href="https://inkle.me" className="hover:opacity-70 !text-pink-400 font-medium">
+            {/* Currently working on <a href="https://inkle.me" className="hover:opacity-70 !text-pink-400 font-medium">
               inkle.me,
             </a>
          &nbsp;send me a Hi at <a href="mailto:burhan@inkle.me" className="hover:opacity-70 !text-blue-400 font-medium">
               burhan@inkle.me,
             </a>
-             &nbsp;I would to hear from you!
+             &nbsp;I would to hear from you! */}
           </p>
 
           <div className="flex flex-wrap gap-2">
@@ -90,7 +88,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mt-12 pt-8 border-t">
+        <section className="mt-12 py-8 border-y">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="space-y-1">
               <div className="flex items-center gap-1.5 text-muted">
@@ -111,21 +109,21 @@ export default function Home() {
             <div className="space-y-1">
               <div className="flex items-center gap-1.5 text-muted">
                 <ExternalLink size={12} strokeWidth={1.5} />
-                <span className="text-xs uppercase tracking-wider">Social</span>
+                <span className="text-xs uppercase tracking-wider">Links</span>
               </div>
               <div className="flex gap-3 items-center mt-1">
-            <a
+            {/* <a
               href="https://github.com/azrael07"
               target="_blank"
               rel="noopener noreferrer"
-              className="!text-gray-700 text-sm hover:opacity-70"
+              className="text-sm hover:opacity-70"
               aria-label="GitHub"
             >
               <FaGithub size={14} />
-            </a>
+            </a> */}
             <Link
               href="/blog"
-              className="!text-gray-700 text-sm hover:opacity-70"
+              className="text-sm hover:opacity-70"
               aria-label="Blog RSS"
             >
               <RssIcon size={14} />
@@ -136,7 +134,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mt-12 pt-8 border-t">
+        {/* <section className="mt-12 pt-8 border-t">
           <h2 className="text-xs uppercase tracking-widest text-muted mb-6">
             Work
           </h2>
@@ -175,7 +173,7 @@ export default function Home() {
               </a>
             ))}
           </div>
-        </section>
+        </section> */}
       </main>
       <Footer />
    
