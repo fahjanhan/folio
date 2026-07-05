@@ -124,50 +124,50 @@ button:hover {
 /* Townsquare */
 
 #townsquare-root#townsquare-root {
-  --scene: #dde4e4;
-  --ground-fill: #edf0f2;
-  --page: #edf0f2;
-  --surface: #f2fafd;
-  --ink: #2a2926;
-  --you: #6ab9cd;
-  --tree-trunk: #6b777b;
-  --tree-canopy: #6b7b7b;
-  --other: #26241f;
-  --ground-line: rgba(42, 41, 38, 0.16);
-  --ground: rgba(42, 41, 38, 0.16);
+  --scene: #e4eaf2;
+  --ground-fill: #edf1f7;
+  --page: #edf1f7;
+  --surface: #f5f7fa;
+  --ink: #202738;
+  --you: #334155;
+  --tree-trunk: #5a6677;
+  --tree-canopy: #7a8797;
+  --other: #202738;
+  --ground-line: rgba(32, 39, 56, 0.16);
+  --ground: rgba(32, 39, 56, 0.16);
   --you-deep: var(--you);
   --text: var(--ink);
   --muted: var(--ink);
 }
 #townsquare-root#townsquare-root[data-townsquare-theme="dark"] {
-  --scene: #222625;
-  --ground-fill: #161818;
-  --page: #161818;
-  --surface: #1f2323;
-  --ink: #e7f3f1;
-  --you: #93b7e6;
-  --tree-trunk: #6b7b77;
-  --tree-canopy: #6b7b77;
-  --other: #ddd7cc;
-  --ground-line: rgba(242, 238, 230, 0.18);
-  --ground: rgba(242, 238, 230, 0.18);
+  --scene: #353c49;
+  --ground-fill: #2d3340;
+  --page: #2d3340;
+  --surface: #3d4452;
+  --ink: #b1bfd4;
+  --you: #268bd2;
+  --tree-trunk: #8a94a2;
+  --tree-canopy: #8a94a2;
+  --other: #b1bfd4;
+  --ground-line: rgba(177, 191, 212, 0.18);
+  --ground: rgba(177, 191, 212, 0.18);
   --you-deep: var(--you);
   --text: var(--ink);
   --muted: var(--ink);
 }
 @media (prefers-color-scheme: dark) {
   #townsquare-root#townsquare-root[data-townsquare-theme="auto"] {
-  --scene: #222625;
-  --ground-fill: #161818;
-  --page: #161818;
-  --surface: #1f2323;
-  --ink: #e7f3f1;
-  --you: #93b7e6;
-  --tree-trunk: #6b7b77;
-  --tree-canopy: #6b7b77;
-  --other: #ddd7cc;
-  --ground-line: rgba(242, 238, 230, 0.18);
-  --ground: rgba(242, 238, 230, 0.18);
+  --scene: #353c49;
+  --ground-fill: #2d3340;
+  --page: #2d3340;
+  --surface: #3d4452;
+  --ink: #b1bfd4;
+  --you: #268bd2;
+  --tree-trunk: #8a94a2;
+  --tree-canopy: #8a94a2;
+  --other: #b1bfd4;
+  --ground-line: rgba(177, 191, 212, 0.18);
+  --ground: rgba(177, 191, 212, 0.18);
   --you-deep: var(--you);
   --text: var(--ink);
   --muted: var(--ink);
