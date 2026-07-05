@@ -13,6 +13,7 @@ export default function TownSquareWidget() {
       <link rel="stylesheet" href={`${SERVER_ORIGIN}/widget.css`} />
 
       <div id="townsquare-root" />
+      <div id="townsquare-count" />
 
       <Script
         id="townsquare-mount"
@@ -27,6 +28,25 @@ export default function TownSquareWidget() {
                 serverOrigin: "${SERVER_ORIGIN}",
                 siteKey: "${SITE_KEY}",
                 theme: "host",
+              });
+            }
+          });
+        `}
+      </Script>
+        
+      <Script
+        id="townsquare-counter-mount"
+        type="module"
+        strategy="afterInteractive"
+      >
+        {`
+          import("${SERVER_ORIGIN}/townsquare-counter.mjs").then(({ mountTownSquareCounter }) => {
+            const root = document.getElementById("townsquare-count");
+            if (root) {
+              mountTownSquareCounter(root, {
+                serverOrigin: "${SERVER_ORIGIN}",
+                siteKey: "${SITE_KEY}",
+                variant: "minimal",
               });
             }
           });
