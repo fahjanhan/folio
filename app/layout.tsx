@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Burhan",
+  title: "NeoScribes — Burhan",
   description: "I write about technology and life.",
 };
 
