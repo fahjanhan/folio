@@ -28,6 +28,39 @@ function extractRichText(richText: Array<{ plain_text: string }>): string {
   return richText.map((block) => block.plain_text).join("");
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function getAllBlocks(notion: any, blockId: string): Promise<NotionBlock[]> {
+  let blocks: NotionBlock[] = [];
+  let cursor: string | undefined = undefined;
+
+  // 1. Paginate through ALL children at this level.
+  //    Notion caps each response (default/max page_size=100), so has_more/
+  //    next_cursor must be followed or long posts get truncated.
+  do {
+    const query = new URLSearchParams({ page_size: "100" });
+    if (cursor) query.set("start_cursor", cursor);
+
+    const response = (await notion.request({
+      method: "get",
+      path: `blocks/${blockId}/children?${query.toString()}`,
+    })) as { results: NotionBlock[]; has_more: boolean; next_cursor: string | null };
+
+    blocks = blocks.concat(response.results);
+    cursor = response.has_more ? response.next_cursor ?? undefined : undefined;
+  } while (cursor);
+
+  // 2. Recursively fetch children for any block that has them
+  //    (toggles, nested bullet/numbered lists, columns, synced blocks, etc.)
+  //    has_children=true does NOT include the nested content inline.
+  for (const block of blocks) {
+    if ((block as { has_children?: boolean }).has_children) {
+      (block as Record<string, unknown>).children = await getAllBlocks(notion, block.id);
+    }
+  }
+
+  return blocks;
+}
+
 export async function getPosts(): Promise<Post[]> {
   const notionApiKey = process.env.NOTION_API_KEY;
   const notionDatabaseId = process.env.NOTION_DATABASE_ID;
@@ -42,6 +75,8 @@ export async function getPosts(): Promise<Post[]> {
     const notion = new Client({
       auth: notionApiKey,
       notionVersion: "2025-09-03",
+        fetch: (url: RequestInfo | URL, init?: RequestInit) =>
+    fetch(url, { ...init, cache: "no-store" }),
     });
 
     const databaseResponse = (await notion.request({
@@ -73,22 +108,17 @@ export async function getPosts(): Promise<Post[]> {
     })) as { results: Array<{ id: string; properties: Record<string, unknown> }> };
 
     const pageIds = response.results.map((page) => page.id);
-    const blocksResponses = await Promise.all(
-      pageIds.map((id) =>
-        notion
-          .request({
-            method: "get",
-            path: `blocks/${id}/children`,
-          })
-          .catch(() => ({ results: [] }))
-      )
+
+    // Use the recursive, paginating fetcher instead of a single request
+    const allBlocks = await Promise.all(
+      pageIds.map((id) => getAllBlocks(notion, id).catch(() => [] as NotionBlock[]))
     );
 
     const posts: Post[] = [];
 
     for (let i = 0; i < response.results.length; i++) {
       const page = response.results[i];
-      const blockData = blocksResponses[i] as { results: NotionBlock[] };
+      const blocks = allBlocks[i];
       const props = page.properties as Record<string, unknown>;
 
       const titleProp = props.Name as { title?: Array<{ plain_text: string }> };
@@ -114,7 +144,6 @@ export async function getPosts(): Promise<Post[]> {
       };
       const tags = tagsProp?.multi_select?.map((t) => t.name) || [];
 
-      const blocks = blockData.results;
       const wordCount = blocks.reduce((count, block) => {
         const blockData = block[block.type] as { rich_text?: Array<{ plain_text: string }> };
         if (blockData?.rich_text) {
@@ -148,6 +177,8 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   const posts = await getPosts();
   return posts.find((post) => post.slug === slug) || null;
 }
+
+// getPlaceholderPosts() unchanged — keep as-is
 
 function getPlaceholderPosts(): Post[] {
   return [

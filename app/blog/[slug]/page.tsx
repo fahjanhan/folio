@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+// or: export const revalidate = 60; // refetch at most once/minute
 import Link from "next/link";
 import { ArrowLeft, Clock, Tag, Calendar } from "lucide-react";
 import Header from "../../components/Header";

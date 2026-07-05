@@ -394,16 +394,8 @@ function NotionImage({ src, alt }: { src: string; alt: string }) {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 
-  if (error) {
-    return (
-      <div className="w-full aspect-video bg-muted/10 border border-border rounded flex items-center justify-center text-xs text-muted">
-        Image failed to load
-      </div>
-    );
-  }
-
   return (
-    <div className="relative w-full">
+    <div className="relative w-full min-h-[200px]">
       {!loaded && (
         <div className="absolute inset-0 bg-muted/10 animate-pulse rounded" />
       )}
@@ -411,14 +403,26 @@ function NotionImage({ src, alt }: { src: string; alt: string }) {
       <img
         src={src}
         alt={alt || "Blog post image"}
-        loading="lazy"
         decoding="async"
+        ref={(img) => {
+          // Handles the case where the image is served from cache and
+          // is already "complete" before React attaches the onLoad listener,
+          // which means the load event never fires.
+          if (img && img.complete && !loaded) {
+            setLoaded(true);
+          }
+        }}
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
         className={`w-full max-h-[70vh] object-contain transition-opacity duration-300 ${
           loaded ? "opacity-100" : "opacity-0"
         }`}
       />
+      {error && (
+        <div className="w-full aspect-video bg-muted/10 border border-border rounded flex items-center justify-center text-xs text-muted">
+          Image failed to load
+        </div>
+      )}
     </div>
   );
 }

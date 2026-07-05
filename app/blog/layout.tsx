@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog — Burhan Amjad",
-  description: "Thoughts and writing by Burhan Amjad.",
+  title: "Blog  — Burhan Jade",
+  description: "Thoughts and writing by Burhan Jade.",
 };
 
 export default function BlogLayout({
