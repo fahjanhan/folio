@@ -1,0 +1,57 @@
+[
+  {
+    "date": "2027-06-01",
+    "day": "Tuesday",
+    "hijri": "26/12/1448",
+    "Fajr": "04:01 AM",
+    "Shurooq": "05:24 AM",
+    "Duhur": "12:18 PM",
+    "Asr": "03:37 PM",
+    "Maghrib": "07:05 PM",
+    "Isha": "08:29 PM"
+  },
+  {
+    "date": "2027-06-02",
+    "day": "Wednesday",
+    "hijri": "27/12/1448",
+    "Fajr": "04:01 AM",
+    "Shurooq": "05:24 AM",
+    "Duhur": "12:18 PM",
+    "Asr": "03:37 PM",
+    "Maghrib": "07:05 PM",
+    "Isha": "08:29 PM"
+  },
+  {
+    "date": "2027-06-03",
+    "day": "Thursday",
+    "hijri": "28/12/1448",
+    "Fajr": "04:00 AM",
+    "Shurooq": "05:24 AM",
+    "Duhur": "12:18 PM",
+    "Asr": "03:37 PM",
+    "Maghrib": "07:06 PM",
+    "Isha": "08:30 PM"
+  },
+  {
+    "date": "2027-06-04",
+    "day": "Friday",
+    "hijri": "29/12/1448",
+    "Fajr": "04:00 AM",
+    "Shurooq": "05:24 AM",
+    "Duhur": "12:18 PM",
+    "Asr": "03:37 PM",
+    "Maghrib": "07:06 PM",
+    "Isha": "08:30 PM"
+  },
+  {
+    "date": "2027-06-05",
+    "day": "Saturday",
+    "hijri": "30/12/1448",
+    "Fajr": "04:00 AM",
+    "Shurooq": "05:23 AM",
+    "Duhur": "12:18 PM",
+    "Asr": "03:37 PM",
+    "Maghrib": "07:06 PM",
+    "Isha": "08:31 PM"
+  }
+]
