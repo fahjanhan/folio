@@ -13,6 +13,7 @@ import {
 import { FaGithub } from "react-icons/fa";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import TownSquareWidget from "./components/Townsquarewidget";
 
 const skills = [
   { icon: Code2, label: "Software" },
@@ -174,6 +175,13 @@ export default function Home() {
             ))}
           </div>
         </section> */}
+
+        <section className="mt-12 pt-8">
+        <div>
+        <TownSquareWidget />
+        </div>
+        </section>
+    
       </main>
       <Footer />
    
