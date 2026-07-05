@@ -32,7 +32,7 @@ export default async function PrayerPage() {
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-12">
         <section>
           <div className="mb-8">
-            <h1 className="text-2xl font-medium tracking-tight">{day} <LiveTime /></h1>
+            <h1 className="text-2xl font-medium tracking-tight">{day} - <LiveTime /></h1>
             <p className="text-muted text-sm mt-1">
               {date} &middot; {hijri} AH
             </p>

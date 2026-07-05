@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Sun, Moon, Menu, X, Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTheme, THEMES, ThemeId } from "./ThemeProvider";
+import { FaIcons } from "react-icons/fa";
 
 const navItems = [
   { href: "/", label: "About" },
@@ -59,7 +60,8 @@ export default function Header() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-14">
           <Link href="/" className="flex items-center text-sm font-medium tracking-tight h-full">
-            BA
+            <FaIcons className="mr-2" />
+            <span className="hidden sm:inline">BA</span>
           </Link>
 
           <nav className="hidden sm:flex items-center gap-6 h-full">
