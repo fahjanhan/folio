@@ -149,10 +149,10 @@ export default async function BlogPostPage({ params }: Props) {
         <div className="flex items-center justify-between">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-fg transition-colors bg-gray-500/10 p-1 rounded-sm"
+            className="inline-flex items-center gap-1.5 border border-border text-xs text-muted hover:text-fg transition-colors p-1 rounded-xs"
           >
             <ArrowLeft size={12} strokeWidth={1.5} />
-            <span>Feeds</span>
+            <span>Back</span>
           </Link>
           <ShareButton title={post.title} />
         </div>
@@ -178,7 +178,7 @@ export default async function BlogPostPage({ params }: Props) {
                     <Link
                       key={tag}
                       href={`/blog?tag=${encodeURIComponent(tag)}`}
-                      className="text-xs px-1.5 py-0.5 rounded-sm border border-border hover:border-fg/40 hover:text-fg transition-colors"
+                      className="text-xs px-1.5 py-0.5 rounded-xs border border-border hover:border-fg/40 hover:text-fg transition-colors items-center flex gap-1"
                     >
                       {tag}
                     </Link>

@@ -126,7 +126,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
   return (
     <section>
       <div className="mb-8">
-        <h1 className="text-2xl font-medium tracking-tight">Feeds</h1>
+        <h1 className="text-2xl font-medium tracking-tight">Blogs</h1>
         <p className="text-muted text-sm mt-1" aria-live="polite">
           {filtered.length} {filtered.length === 1 ? "post" : "posts"}
           {activeTag ? (
@@ -208,9 +208,9 @@ export default function BlogList({ posts }: { posts: Post[] }) {
       )}
 
       {/* List */}
-      <div ref={listTopRef} className="divide-y divide-border border-t border-border scroll-mt-6">
+      <div ref={listTopRef} className="space-y-3 scroll-mt-6">
         {paginated.length === 0 && (
-          <div className="py-10 text-center space-y-3">
+          <div className="py-10 text-center space-y-3 border border-border p-5">
             <p className="text-muted text-sm">No posts match your search.</p>
             {hasActiveFilters && (
               <button
@@ -224,7 +224,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
         )}
 
         {paginated.map((post) => (
-          <article key={post.id} className="group py-6">
+          <article key={post.id} className="group border border-border p-5 hover:border-fg/20 transition-colors">
             <Link href={`/blog/${post.slug}`} className="block">
               <div className="flex items-start justify-between gap-6">
                 <div className="space-y-2 flex-1 min-w-0">
@@ -254,7 +254,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                             e.preventDefault();
                             handleTagClick(tag);
                           }}
-                          className="text-xs px-2 py-0.5 rounded-sm border border-border text-muted hover:border-fg/40 hover:text-fg transition-colors"
+                          className="text-xs px-2 py-0.5 border border-border text-muted hover:border-fg/40 hover:text-fg transition-colors"
                         >
                           {tag}
                         </span>
