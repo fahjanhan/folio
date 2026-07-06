@@ -66,7 +66,7 @@ export default function Home() {
           </div>
 
           <p className="text-muted leading-relaxed max-w-xl">
-            Building hardware and software with an emphasis on functional engineering. Interested in software, robotics, rocketry and embedded systems.
+            Building hardware and software with an emphasis on functional engineering. Interested in software, robotics, rocketry and art.
             {/* Currently working on <a href="https://inkle.me" className="hover:opacity-70 !text-pink-400 font-medium">
               inkle.me,
             </a>
