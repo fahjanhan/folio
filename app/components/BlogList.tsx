@@ -128,7 +128,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
       <div className="mb-8">
         <h1 className="text-2xl font-medium tracking-tight">Blogs</h1>
         <p className="text-muted text-sm mt-1" aria-live="polite">
-          {filtered.length} {filtered.length === 1 ? "post" : "posts"}
+          {filtered.length} {filtered.length === 1 ? "Article" : "Articles"}
           {activeTag ? (
             <>
               {" "}
