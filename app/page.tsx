@@ -2,15 +2,14 @@ import Link from "next/link";
 import {
   MapPin,
   Mail,
-  ArrowUpRight,
   Code2,
   Bot,
   Layers,
   ExternalLink,
   RssIcon,
   Rocket,
+  Palette,
 } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import TownSquareWidget from "./components/Townsquarewidget";
@@ -20,6 +19,7 @@ const skills = [
   { icon: Bot, label: "Robotics" },
   { icon: Rocket, label: "Rockets" },
   { icon: Layers, label: "Systems" },
+  { icon: Palette, label: "Art" },
 ];
 
 // const projects = [
