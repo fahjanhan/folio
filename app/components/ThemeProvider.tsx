@@ -45,8 +45,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const current = document.documentElement.getAttribute("data-theme") as ThemeId | null;
-    setThemeState(current && THEMES.some((t) => t.id === current) ? current : "light");
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem("theme");
+    } catch (e) {}
+
+    const valid = stored && THEMES.some((t) => t.id === stored);
+
+    if (valid) {
+      // Re-apply in case React's hydration stripped attributes from <html>
+      applyTheme(stored as ThemeId);
+      setThemeState(stored as ThemeId);
+    } else {
+      // No stored preference — read from DOM (set by anti-flash script based on OS preference)
+      const domTheme = document.documentElement.getAttribute("data-theme") as ThemeId | null;
+      if (domTheme && THEMES.some((t) => t.id === domTheme)) {
+        setThemeState(domTheme);
+      }
+    }
     setMounted(true);
   }, []);
 
