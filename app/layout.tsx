@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Josefin_Sans, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { ThemeProvider } from "./components/ThemeProvider";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const josefinSans = Josefin_Sans({
+  variable: "--font-josefin-sans",
   subsets: ["latin"],
 });
 
@@ -62,7 +62,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col antialiased`}>
+      <body className={`${josefinSans.variable} ${geistMono.variable} min-h-screen flex flex-col antialiased`}>
         <ThemeProvider>
           <div className="flex flex-col min-h-screen">
             {children}

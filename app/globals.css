@@ -49,14 +49,13 @@
   --border: #4a4038;
   --accent: #d98c4a;
 }
-
 @theme inline {
   --color-bg: var(--bg);
   --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-accent: var(--accent);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-josefin-sans);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -71,8 +70,8 @@ html {
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: var(--font-mono);
-  font-size: 13px;
+  font-family: var(--font-sans);
+  font-size: 14px;
   line-height: 1.7;
 }
 
