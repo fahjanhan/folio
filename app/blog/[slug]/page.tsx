@@ -162,6 +162,9 @@ export default async function BlogPostPage({ params }: Props) {
             <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight leading-tight">
               {post.title}
             </h1>
+            {post.excerpt && (
+              <p className="text-muted text-base mt-2 sm:mt-3">{post.excerpt}</p>
+            )}
             <div className="flex flex-wrap items-center gap-4 mt-4 text-muted">
               <div className="flex items-center gap-1.5">
                 <Calendar size={12} strokeWidth={1.5} />
@@ -175,13 +178,13 @@ export default async function BlogPostPage({ params }: Props) {
                 <div className="flex items-center gap-1.5 flex-wrap">
                   <Tag size={12} strokeWidth={1.5} className="text-muted-foreground" />
                   {post.tags.map((tag) => (
-                    <Link
-                      key={tag}
-                      href={`/blog?tag=${encodeURIComponent(tag)}`}
-                      className="text-xs px-1.5 py-0.5 rounded-xs border border-border hover:border-fg/40 hover:text-fg transition-colors items-center flex gap-1"
-                    >
-                      {tag}
-                    </Link>
+                   <Link
+                    key={tag}
+                    href={`/blog?tag=${encodeURIComponent(tag)}`}
+                    className="text-xs px-1.5 py-0.5 rounded-xs border border-border hover:border-fg/40 hover:text-fg transition-colors flex items-center justify-center gap-1"
+                  >
+                    {tag}
+                  </Link>
                   ))}
                 </div>
               )}
