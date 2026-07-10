@@ -70,7 +70,7 @@ html {
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: var(--font-sans);
+  font-family: var(--font-poppins);
   font-size: 14px;
   line-height: 1.7;
 }

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Josefin_Sans, Geist_Mono } from "next/font/google";
+import { Poppins, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { ThemeProvider } from "./components/ThemeProvider";
 import "./globals.css";
 
-const josefinSans = Josefin_Sans({
-  variable: "--font-josefin-sans",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
@@ -62,7 +63,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${josefinSans.variable} ${geistMono.variable} min-h-screen flex flex-col antialiased`}>
+      <body className={`${poppins.variable} ${geistMono.variable} min-h-screen flex flex-col antialiased`}>
         <ThemeProvider>
           <div className="flex flex-col min-h-screen">
             {children}
