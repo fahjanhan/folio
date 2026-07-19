@@ -1,75 +1,3 @@
-// export const dynamic = "force-dynamic";
-// // or: export const revalidate = 60; // refetch at most once/minute
-// import Link from "next/link";
-// import { ArrowLeft, Clock, Tag, Calendar } from "lucide-react";
-// import Header from "../../components/Header";
-// import { NotionRenderer } from "../../components/NotionRenderer";
-// import { getPostBySlug } from "@/lib/posts";
-// import { notFound } from "next/navigation";
-// import Footer from "@/app/components/Footer";
-
-// interface Props {
-//   params: Promise<{ slug: string }>;
-// }
-
-// export default async function BlogPostPage({ params }: Props) {
-//   const { slug } = await params;
-//   const post = await getPostBySlug(slug);
-
-//   if (!post) {
-//     notFound();
-//   }
-
-//   return (
-//     <div className="min-h-screen flex flex-col">
-//       <Header />
-//       <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-12">
-//         <Link
-//           href="/blog"
-//           className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-fg transition-colors bg-gray-500/10 p-1 rounded-sm"
-//         >
-//           <ArrowLeft size={12} strokeWidth={1.5} />
-//           <span>Feeds</span>
-//         </Link>
-
-//         <article>
-//           <header className="mt-8 pb-8 border-b">
-//             <h1 className="text-xl font-medium tracking-tight">{post.title}</h1>
-//             <div className="flex flex-wrap items-center gap-4 mt-3 text-muted">
-//               <div className="flex items-center gap-1.5">
-//                 <Calendar size={12} strokeWidth={1.5} />
-//                 <span className="text-xs">{post.date}</span>
-//               </div>
-//               <div className="flex items-center gap-1.5">
-//                 <Clock size={12} strokeWidth={1.5} />
-//                 <span className="text-xs">{post.readingTime} min read</span>
-//               </div>
-//               {post.tags.length > 0 && (
-//                 <div className="flex items-center gap-1.5 flex-wrap">
-//                   <Tag size={12} strokeWidth={1.5} className="text-muted-foreground" />
-//                   {post.tags.map((tag) => (
-//                     <span
-//                       key={tag}
-//                       className="text-xs px-1 py-0.5 rounded-sm border border-border"
-//                     >
-//                       {tag}
-//                     </span>
-//                   ))}
-//                 </div>
-//               )}
-//             </div>
-//           </header>
-//           <div className="mt-8 text-[15px] leading-relaxed">
-//             <NotionRenderer blocks={post.blocks} />
-//           </div>
-//         </article>
-//       </main>
-//      <Footer />
-//     </div>
-//   );
-// }
-
-
 export const dynamic = "force-dynamic";
 // or: export const revalidate = 60; // refetch at most once/minute
 
@@ -140,7 +68,7 @@ export default async function BlogPostPage({ params }: Props) {
     <div className="min-h-screen flex flex-col">
       <ReadingProgress />
       <Header />
-      <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-12 border-x border-border">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -158,7 +86,7 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
 
         <article>
-          <header className="mt-8 pb-8 border-b border-border">
+          <header className="mt-8 pb-8">
             <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight leading-tight">
               {post.title}
             </h1>
@@ -189,6 +117,9 @@ export default async function BlogPostPage({ params }: Props) {
                 </div>
               )}
             </div>
+
+            {/* full-bleed border, independent of content padding */}
+            <div className="mt-8 -mx-4 sm:-mx-6 border-b border-border" />
           </header>
 
           <div className="mt-8 text-[15px] leading-relaxed prose-content">
@@ -197,37 +128,42 @@ export default async function BlogPostPage({ params }: Props) {
         </article>
 
         {(prevPost || nextPost) && (
-          <nav className="mt-16 pt-8 border-t border-border grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {prevPost ? (
-              <Link
-                href={`/blog/${prevPost.slug}`}
-                className="group flex flex-col gap-1 p-4 rounded-sm border border-border hover:border-fg/30 transition-colors"
-              >
-                <span className="text-xs text-muted flex items-center gap-1">
-                  <ArrowLeft size={11} strokeWidth={1.5} /> Previous
-                </span>
-                <span className="text-sm font-medium group-hover:underline underline-offset-4 line-clamp-2">
-                  {prevPost.title}
-                </span>
-              </Link>
-            ) : (
-              <div />
-            )}
+          <>
+            {/* full-bleed border, independent of content padding */}
+            <div className="mt-16 -mx-4 sm:-mx-6 border-t border-border" />
 
-            {nextPost && (
-              <Link
-                href={`/blog/${nextPost.slug}`}
-                className="group flex flex-col gap-1 p-4 rounded-sm border border-border hover:border-fg/30 transition-colors sm:text-right sm:items-end"
-              >
-                <span className="text-xs text-muted flex items-center gap-1 sm:flex-row-reverse">
-                  Next <ArrowLeft size={11} strokeWidth={1.5} className="rotate-180" />
-                </span>
-                <span className="text-sm font-medium group-hover:underline underline-offset-4 line-clamp-2">
-                  {nextPost.title}
-                </span>
-              </Link>
-            )}
-          </nav>
+            <nav className="pt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {prevPost ? (
+                <Link
+                  href={`/blog/${prevPost.slug}`}
+                  className="group flex flex-col gap-1 p-4 rounded-sm border border-border hover:border-fg/30 transition-colors"
+                >
+                  <span className="text-xs text-muted flex items-center gap-1">
+                    <ArrowLeft size={11} strokeWidth={1.5} /> Previous
+                  </span>
+                  <span className="text-sm font-medium group-hover:underline underline-offset-4 line-clamp-2">
+                    {prevPost.title}
+                  </span>
+                </Link>
+              ) : (
+                <div />
+              )}
+
+              {nextPost && (
+                <Link
+                  href={`/blog/${nextPost.slug}`}
+                  className="group flex flex-col gap-1 p-4 rounded-sm border border-border hover:border-fg/30 transition-colors sm:text-right sm:items-end"
+                >
+                  <span className="text-xs text-muted flex items-center gap-1 sm:flex-row-reverse">
+                    Next <ArrowLeft size={11} strokeWidth={1.5} className="rotate-180" />
+                  </span>
+                  <span className="text-sm font-medium group-hover:underline underline-offset-4 line-clamp-2">
+                    {nextPost.title}
+                  </span>
+                </Link>
+              )}
+            </nav>
+          </>
         )}
       </main>
       <BackToTop />

@@ -237,7 +237,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                     </span>
                   </div>
 
-                  <h2 className="text-xl font-semibold leading-snug group-hover:underline underline-offset-4 decoration-1">
+                  <h2 className="text-xl font-semibold leading-snug">
                     {post.title}
                   </h2>
 

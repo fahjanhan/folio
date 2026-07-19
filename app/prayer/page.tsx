@@ -5,6 +5,17 @@ import Footer from "../components/Footer";
 import { PrayerCountdown } from "../components/PrayerCountdown";
 import { LiveTime } from "../components/LiveTime";
 import { getPrayerTimes } from "../../lib/prayer";
+import { Calendar, Cloud, MapPin } from "lucide-react";
+
+function formatDate(d: Date) {
+  return d
+    .toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+    .replace(/ /g, "-");
+}
 
 async function getWeather() {
   try {
@@ -25,23 +36,38 @@ async function getWeather() {
 export default async function PrayerPage() {
   const { date, day, hijri, entries, current, next } = await getPrayerTimes();
   const weather = await getWeather();
+  const displayDate = formatDate(new Date());
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-12">
         <section>
+          
           <div className="mb-8">
-            <h1 className="text-2xl font-medium tracking-tight">{day} - <LiveTime /></h1>
-            <p className="text-muted text-sm mt-1">
-              {date} &middot; {hijri} AH
-            </p>
-                <p className="text-muted text-sm mt-1">
-              Al Ain
+            <div className="flex items-baseline gap-2">
+              <h1 className="text-2xl font-medium tracking-tight">{day}</h1>
+              <span className="text-2xl font-medium tracking-tight text-muted tabular-nums">
+                <LiveTime />
+              </span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-sm text-muted">
+              <span className="flex items-center gap-1.5">
+                <Calendar size={13} strokeWidth={1.5} />
+                {displayDate} &middot; {hijri} AH
+              </span>
+              <span className="flex items-center gap-1.5">
+                <MapPin size={13} strokeWidth={1.5} />
+                Al Ain
+              </span>
               {weather && (
-                <span> &middot; {weather.temp}&deg;C &middot; {weather.humidity}% humidity</span>
+                <span className="flex items-center gap-1.5">
+                  <Cloud size={13} strokeWidth={1.5} />
+                  {weather.temp}&deg;C &middot; {weather.humidity}% humidity
+                </span>
               )}
-            </p>
+            </div>
           </div>
 
           {next && (

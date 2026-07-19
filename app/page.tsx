@@ -5,14 +5,14 @@ import {
   Code2,
   Bot,
   Layers,
-  ExternalLink,
-  RssIcon,
   Rocket,
   Palette,
+  Link2,
 } from "lucide-react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import TownSquareWidget from "./components/Townsquarewidget";
+import { GrArticle } from "react-icons/gr";
 
 const skills = [
   { icon: Code2, label: "Software" },
@@ -21,38 +21,6 @@ const skills = [
   { icon: Layers, label: "Systems" },
   { icon: Palette, label: "Art" },
 ];
-
-// const projects = [
-//   {
-//     name: "Inkle",
-//     description: "Tiny e-commerce platform for small creators",
-//     tags: ["Web", "SaaS"],
-//     year: "2024",
-//     link: "https://inkle.me",
-//   },
-
-  // {
-  //   name: "Kyoshi",
-  //   description: "AI-powered talent aquisition platform for companies and job seekers",
-  //   tags: ["Web", "SaaS"],
-  //   year: "2024",
-  //   link: "https://kyoshi.me",
-  // },
-  // {
-  //   name: "Eggbot",
-  //   description: "An open-source, low-cost, desktop egg robot powered by ESP32",
-  //   tags: ["Hardware", "Robotics"],
-  //   year: "2023",
-  //   link: "",
-  // },
-  //   {
-  //   name: "Townhall",
-  //   description: "Hyperlocal social network for neighborhoods and communities",
-  //   tags: ["Mobile", "App"],
-  //   year: "2022",
-  //   link: "https://townhall.ae",
-  // },
-// ];
 
 export default function Home() {
   return (
@@ -91,14 +59,14 @@ export default function Home() {
 
         <section className="mt-12 py-8 border-y">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="space-y-1">
+            <div className="space-y-1 border-r">
               <div className="flex items-center gap-1.5 text-muted">
                 <MapPin size={12} strokeWidth={1.5} />
                 <span className="text-xs uppercase tracking-wider">Location</span>
               </div>
               <p className="text-sm">Hyrule </p>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-1 border-r">
               <div className="flex items-center gap-1.5 text-muted">
                 <Mail size={12} strokeWidth={1.5} />
                 <span className="text-xs uppercase tracking-wider">Contact</span>
@@ -109,72 +77,23 @@ export default function Home() {
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-1.5 text-muted">
-                <ExternalLink size={12} strokeWidth={1.5} />
+                <Link2 size={12} strokeWidth={1.5} />
                 <span className="text-xs uppercase tracking-wider">Links</span>
               </div>
               <div className="flex gap-3 items-center mt-1">
-            {/* <a
-              href="https://github.com/azrael07"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm hover:opacity-70"
-              aria-label="GitHub"
-            >
-              <FaGithub size={14} />
-            </a> */}
             <Link
               href="/blog"
-              className="text-sm hover:opacity-70"
-              aria-label="Blog RSS"
+              className="flex items-center gap-1.5 text-sm hover:opacity-70"
+              aria-label="Blog"
             >
-              <RssIcon size={14} />
+              <GrArticle size={14} />
+              Blog
             </Link>
           </div>
        
             </div>
           </div>
         </section>
-
-        {/* <section className="mt-12 pt-8 border-t">
-          <h2 className="text-xs uppercase tracking-widest text-muted mb-6">
-            Work
-          </h2>
-          <div className="space-y-0">
-            {projects.map((project) => (
-              <a
-                key={project.name}
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block py-4 border-b last:border-b-0"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-medium group-hover:opacity-70">
-                        {project.name}
-                      </h3>
-                      <ArrowUpRight
-                        size={12}
-                        strokeWidth={1.5}
-                        className="opacity-0 group-hover:opacity-70 transition-opacity"
-                      />
-                    </div>
-                    <p className="text-muted text-xs">{project.description}</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-[10px] text-muted uppercase tracking-wider">
-                        {project.tags.join(" / ")}
-                      </span>
-                      <span className="text-[10px] text-muted">
-                        — {project.year}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        </section> */}
 
         <section className="mt-12 pt-8">
         <div>

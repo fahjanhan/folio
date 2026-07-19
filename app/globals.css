@@ -208,7 +208,7 @@ button:hover {
 
 #townsquare-root *,
 #townsquare-count * {
-  border-radius: 10px !important;
+  /* border-radius: 10px !important; */
   box-shadow: none !important;
 }
 
