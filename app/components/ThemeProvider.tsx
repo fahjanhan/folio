@@ -8,7 +8,7 @@ import {
   useCallback,
 } from "react";
 
-export type ThemeId = "light" | "dark" | "warm-light" | "warm-dark";
+export type ThemeId = "light" | "dark" | "sage" | "warm-light" | "warm-dark";
 
 type ThemeDefinition = {
   id: ThemeId;
@@ -19,8 +19,9 @@ type ThemeDefinition = {
 export const THEMES: ThemeDefinition[] = [
   { id: "light", label: "Light", isDark: false },
   { id: "dark", label: "Dark", isDark: true },
-  { id: "warm-light", label: "Warm Light", isDark: false },
-  { id: "warm-dark", label: "Warm Dark", isDark: true },
+  { id: "sage", label: "Sage", isDark: false },
+  { id: "warm-light", label: "Cream", isDark: false },
+  { id: "warm-dark", label: "Choco", isDark: true },
 ];
 
 type ThemeContextType = {

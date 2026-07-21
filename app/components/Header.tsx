@@ -17,6 +17,7 @@ const navItems = [
 const THEME_SWATCHES: Record<ThemeId, string> = {
   light: "#b2bcca",
   dark: "#3c4a55",
+  sage: "#8ea6a7",
   "warm-light": "#d98c4a",
   "warm-dark": "#8a5a3b",
 };

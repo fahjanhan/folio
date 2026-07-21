@@ -39,7 +39,7 @@ export default function RootLayout({
                   stored = localStorage.getItem("theme");
                 } catch (e) {}
 
-                var validThemes = ["light", "dark", "warm-light", "warm-dark"];
+                var validThemes = ["light", "dark", "sage", "warm-light", "warm-dark"];
                 var theme = stored && validThemes.indexOf(stored) !== -1 ? stored : null;
 
                 if (!theme) {

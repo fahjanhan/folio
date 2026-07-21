@@ -34,6 +34,15 @@
   --accent: #268bd2;
 }
 
+[data-theme="sage"] {
+  --bg: #b2bcb3;
+  --fg: #362a25;
+  --muted: #574b47;
+  --border: #a3aaa2;
+  --accent: #574b47;
+}
+
+
 [data-theme="warm-light"] {
   --bg: #f5f1ea;
   --fg: #2b2521;
@@ -173,6 +182,23 @@ button:hover {
   }
 }
 
+[data-theme="sage"] #townsquare-root#townsquare-root {
+  --scene: #c2ccc3;
+  --ground-fill: #b2bcb3;
+  --page: #b2bcb3;
+  --surface: #c5cfca;
+  --ink: #362a25;
+  --you: #574b47;
+  --tree-trunk: #6b6058;
+  --tree-canopy: #7a6f67;
+  --other: #362a25;
+  --ground-line: rgba(54, 42, 37, 0.18);
+  --ground: rgba(54, 42, 37, 0.18);
+  --you-deep: var(--you);
+  --text: var(--ink);
+  --muted: var(--ink);
+}
+
 [data-theme="warm-light"] #townsquare-root#townsquare-root {
   --scene: #e8e0d4;
   --ground-fill: #f5f1ea;
@@ -216,6 +242,12 @@ button:hover {
 #townsquare-count .ts-counter,
 #townsquare-count .ts-counter *,
 #townsquare-count .ts-counter__label {
+  color: #000 !important;
+}
+
+[data-theme="sage"] #townsquare-count .ts-counter,
+[data-theme="sage"] #townsquare-count .ts-counter *,
+[data-theme="sage"] #townsquare-count .ts-counter__label {
   color: #000 !important;
 }
 
