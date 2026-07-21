@@ -43,7 +43,11 @@ const FILE_PATTERN = /^prayers-\d{4}-\d{2}\.json$/;
  * Reads every prayers-YYYY-MM.json file in DATA_DIR and merges them into
  * one sorted array. Adding a new month's file requires no code changes.
  */
+let _cachedData: PrayerDay[] | null = null;
+
 function loadAllPrayerData(): PrayerDay[] {
+  if (_cachedData) return _cachedData;
+
   let filenames: string[];
   try {
     filenames = fs.readdirSync(DATA_DIR).filter((f) => FILE_PATTERN.test(f));
@@ -65,6 +69,7 @@ function loadAllPrayerData(): PrayerDay[] {
   }
 
   all.sort((a, b) => a.date.localeCompare(b.date));
+  _cachedData = all;
   return all;
 }
 
@@ -99,9 +104,9 @@ function dateToTimestamp(dateStr: string): number {
   return new Date(`${dateStr}T00:00:00${TZ_OFFSET}`).getTime();
 }
 
-export async function getPrayerTimes(): Promise<TodayPrayers> {
+export async function getPrayerTimesForDate(dateStr: string): Promise<TodayPrayers> {
   const data = loadAllPrayerData();
-  const key = todayKey();
+  const key = dateStr;
 
   const todayEntry =
     data.find((d) => d.date === key) ??
@@ -136,4 +141,19 @@ export async function getPrayerTimes(): Promise<TodayPrayers> {
     current,
     next,
   };
+}
+
+export function getDateRange(): { min: string; max: string } | null {
+  try {
+    const data = loadAllPrayerData();
+    if (data.length === 0) return null;
+    return { min: data[0].date, max: data[data.length - 1].date };
+  } catch {
+    return null;
+  }
+}
+
+export async function getPrayerTimes(): Promise<TodayPrayers> {
+  const key = todayKey();
+  return getPrayerTimesForDate(key);
 }
