@@ -18,6 +18,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Scribes — Burhan",
   description: "I write about technology and life.",
+  alternates: {
+    types: {
+      "application/rss+xml": "/feed.xml",
+    },
+  },
 };
 
 export default function RootLayout({
