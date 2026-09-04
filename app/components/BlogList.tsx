@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Clock, Search, X, ArrowUpDown } from "lucide-react";
+import { Search, X, ArrowUpDown } from "lucide-react";
 
 type Post = {
   id: string;
@@ -230,11 +230,6 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                 <div className="space-y-2 flex-1 min-w-0">
                   <div className="flex items-center gap-2 text-xs text-muted">
                     <span>{post.date}</span>
-                    <span aria-hidden>·</span>
-                    <span className="flex items-center gap-1">
-                      <Clock size={10} strokeWidth={1.5} />
-                      {post.readingTime} min read
-                    </span>
                   </div>
 
                   <h2 className="text-xl font-semibold leading-snug">
