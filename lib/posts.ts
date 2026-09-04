@@ -172,6 +172,9 @@ async function fetchPostsFromNotion(): Promise<Post[]> {
       };
       const excerpt = excerptProp?.rich_text?.[0]?.plain_text || "";
 
+      const wordCount = excerpt.split(/\s+/).filter(Boolean).length;
+      const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+
       const tagsProp = props.Tags as {
         multi_select?: Array<{ name: string }>;
       };
@@ -184,7 +187,7 @@ async function fetchPostsFromNotion(): Promise<Post[]> {
         date: formatDate(new Date(dateStr)),
         excerpt,
         blocks: [],
-        readingTime: 1,
+        readingTime,
         tags,
         published: true,
       });
