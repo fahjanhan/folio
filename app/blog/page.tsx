@@ -79,11 +79,11 @@ export const dynamic = "force-dynamic";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { getPosts } from "@/lib/posts";
+import { getPostSummaries } from "@/lib/posts";
 import BlogList from "../components/BlogList";
 
 export default async function BlogPage() {
-  const posts = await getPosts();
+  const posts = await getPostSummaries();
 
   return (
     <div className="min-h-screen flex flex-col">

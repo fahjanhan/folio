@@ -7,7 +7,7 @@ import { ArrowLeft, Clock, Tag, Calendar } from "lucide-react";
 import Header from "../../components/Header";
 import Footer from "@/app/components/Footer";
 import { NotionRenderer } from "../../components/NotionRenderer";
-import { getPostBySlug, getPosts } from "@/lib/posts";
+import { getPostBySlug, getPostSummaries } from "@/lib/posts";
 import { notFound } from "next/navigation";
 import { ReadingProgress, ShareButton, BackToTop } from "../[slug]/PostInteractive";
 
@@ -17,7 +17,8 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const summaries = await getPostSummaries();
+  const post = summaries.find((p) => p.slug === slug);
 
   if (!post) return {};
 
@@ -42,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const [post, allPosts] = await Promise.all([getPostBySlug(slug), getPosts()]);
+  const [post, allPosts] = await Promise.all([getPostBySlug(slug), getPostSummaries()]);
 
   if (!post) {
     notFound();

@@ -61,7 +61,57 @@ async function getAllBlocks(notion: any, blockId: string): Promise<NotionBlock[]
   return blocks;
 }
 
+const TTL_MS = 60_000; // cache posts for 60s
+let cache: { data: (Post[]) | null; fetchedAt: number } = { data: null, fetchedAt: 0 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function getNotionClient(): Promise<any> {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { Client } = require("@notionhq/client");
+  return new Client({
+    auth: process.env.NOTION_API_KEY,
+    notionVersion: "2025-09-03",
+    fetch: (url: RequestInfo | URL, init?: RequestInit) =>
+      fetch(url, { ...init, cache: "no-store" }),
+  });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function getDataSourceId(notion: any): Promise<string> {
+  const databaseResponse = (await notion.request({
+    method: "get",
+    path: `databases/${process.env.NOTION_DATABASE_ID}`,
+  })) as { data_sources: Array<{ id: string }> };
+
+  return databaseResponse.data_sources?.[0]?.id;
+}
+
+// Lightweight metadata-only fetch of published posts. Does NOT fetch page
+// content (blocks) — used by the blog list so we don't download every post's
+// full content just to render titles/excerpts.
+export async function getPostSummaries(): Promise<
+  Omit<Post, "blocks">[]
+> {
+  const posts = await getPosts();
+  return posts.map((post) => {
+    const { blocks, ...rest } = post;
+    void blocks;
+    return rest;
+  });
+}
+
 export async function getPosts(): Promise<Post[]> {
+  const now = Date.now();
+  if (cache.data && now - cache.fetchedAt < TTL_MS) {
+    return cache.data;
+  }
+
+  const posts = await fetchPostsFromNotion();
+  cache = { data: posts, fetchedAt: now };
+  return posts;
+}
+
+async function fetchPostsFromNotion(): Promise<Post[]> {
   const notionApiKey = process.env.NOTION_API_KEY;
   const notionDatabaseId = process.env.NOTION_DATABASE_ID;
 
@@ -70,21 +120,9 @@ export async function getPosts(): Promise<Post[]> {
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { Client } = require("@notionhq/client");
-    const notion = new Client({
-      auth: notionApiKey,
-      notionVersion: "2025-09-03",
-        fetch: (url: RequestInfo | URL, init?: RequestInit) =>
-    fetch(url, { ...init, cache: "no-store" }),
-    });
+    const notion = await getNotionClient();
 
-    const databaseResponse = (await notion.request({
-      method: "get",
-      path: `databases/${notionDatabaseId}`,
-    })) as { data_sources: Array<{ id: string }> };
-
-    const dataSourceId = databaseResponse.data_sources?.[0]?.id;
+    const dataSourceId = await getDataSourceId(notion);
 
     if (!dataSourceId) {
       return getPlaceholderPosts();
@@ -107,18 +145,13 @@ export async function getPosts(): Promise<Post[]> {
       },
     })) as { results: Array<{ id: string; properties: Record<string, unknown> }> };
 
-    const pageIds = response.results.map((page) => page.id);
-
-    // Use the recursive, paginating fetcher instead of a single request
-    const allBlocks = await Promise.all(
-      pageIds.map((id) => getAllBlocks(notion, id).catch(() => [] as NotionBlock[]))
-    );
-
+    // The list page only needs metadata, so don't fetch full blocks here.
+    // Individual post pages call getPostBySlug() which fetches that one post's
+    // content. This keeps the blog list fast.
     const posts: Post[] = [];
 
     for (let i = 0; i < response.results.length; i++) {
       const page = response.results[i];
-      const blocks = allBlocks[i];
       const props = page.properties as Record<string, unknown>;
 
       const titleProp = props.Name as { title?: Array<{ plain_text: string }> };
@@ -144,23 +177,14 @@ export async function getPosts(): Promise<Post[]> {
       };
       const tags = tagsProp?.multi_select?.map((t) => t.name) || [];
 
-      const wordCount = blocks.reduce((count, block) => {
-        const blockData = block[block.type] as { rich_text?: Array<{ plain_text: string }> };
-        if (blockData?.rich_text) {
-          return count + extractRichText(blockData.rich_text).split(/\s+/).length;
-        }
-        return count;
-      }, 0);
-      const readingTime = Math.max(1, Math.ceil(wordCount / 200));
-
       posts.push({
         id: page.id,
         slug,
         title,
         date: formatDate(new Date(dateStr)),
         excerpt,
-        blocks,
-        readingTime,
+        blocks: [],
+        readingTime: 1,
         tags,
         published: true,
       });
@@ -173,9 +197,37 @@ export async function getPosts(): Promise<Post[]> {
   }
 }
 
+// Fetches the full content (blocks) of a single post by slug.
+// Falls back to the cached summaries for metadata, then loads only that
+// post's blocks — avoiding downloading every post's content.
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const posts = await getPosts();
-  return posts.find((post) => post.slug === slug) || null;
+  const summaries = await getPostSummaries();
+  const summary = summaries.find((post) => post.slug === slug) || null;
+
+  if (!summary) return null;
+
+  const notionApiKey = process.env.NOTION_API_KEY;
+  const notionDatabaseId = process.env.NOTION_DATABASE_ID;
+  if (!notionApiKey || !notionDatabaseId) return summary as Post;
+
+  try {
+    const notion = await getNotionClient();
+    const blocks = await getAllBlocks(notion, summary.id).catch(() => [] as NotionBlock[]);
+
+    const wordCount = blocks.reduce((count, block) => {
+      const blockData = block[block.type] as { rich_text?: Array<{ plain_text: string }> };
+      if (blockData?.rich_text) {
+        return count + extractRichText(blockData.rich_text).split(/\s+/).length;
+      }
+      return count;
+    }, 0);
+    const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+
+    return { ...summary, blocks, readingTime };
+  } catch (error) {
+    console.error(`Error fetching blocks for "${slug}":`, error);
+    return summary as Post;
+  }
 }
 
 // getPlaceholderPosts() unchanged — keep as-is
