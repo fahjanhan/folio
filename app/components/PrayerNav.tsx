@@ -1,9 +1,17 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { ChevronLeft, ChevronRight, CalendarDays, Cloud, MapPin, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, CalendarDays, Cloud, MapPin, Loader2, Sunrise, Moon } from "lucide-react";
 import { PrayerCountdown } from "./PrayerCountdown";
 import { LiveTime } from "./LiveTime";
+
+type AstroInfo = {
+  sunrise: string | null;
+  sunset: string | null;
+  moonrise: string | null;
+  moonset: string | null;
+  moonPhase: number | null;
+};
 
 type PrayerEntry = {
   name: string;
@@ -21,7 +29,7 @@ type PrayerData = {
   current: PrayerEntry | null;
   next: PrayerEntry | null;
   range: { min: string; max: string } | null;
-  weather: { temp: number; humidity: number } | null;
+  weather: { temp: number; humidity: number; astro: AstroInfo } | null;
   todayNext: PrayerEntry | null;
   todayCurrent: PrayerEntry | null;
 };
@@ -46,6 +54,27 @@ function formatDateDisplay(dateStr: string) {
     .replace(/ /g, "-");
 }
 
+const HIJRI_MONTHS = [
+  "Muharram",
+  "Safar",
+  "Rabi Al Awwal",
+  "Rabi Al Thani",
+  "Jumada Al Ula",
+  "Jumada Al Thani",
+  "Rajab",
+  "Sha'ban",
+  "Ramadan",
+  "Shawwal",
+  "Dhul-Qi'dah",
+  "Dhul-Hijjah",
+];
+
+function formatHijri(hijri: string) {
+  const [day, month, year] = hijri.split("/").map(Number);
+  if (!day || !month || !year || month < 1 || month > 12) return hijri;
+  return `${day} ${HIJRI_MONTHS[month - 1]} ${year}`;
+}
+
 function addDays(dateStr: string, n: number): string {
   const d = new Date(dateStr + "T12:00:00");
   d.setDate(d.getDate() + n);
@@ -61,6 +90,29 @@ function shortDate(dateStr: string) {
   return d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
 }
 
+function formatTime(iso: string | null) {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return null;
+  return d.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "Asia/Dubai",
+  });
+}
+
+function moonPhaseName(phase: number | null) {
+  if (phase === null) return null;
+  if (phase < 0.06 || phase >= 0.94) return "New Moon";
+  if (phase < 0.19) return "Waxing Crescent";
+  if (phase < 0.31) return "First Quarter";
+  if (phase < 0.44) return "Waxing Gibbous";
+  if (phase < 0.56) return "Full Moon";
+  if (phase < 0.69) return "Waning Gibbous";
+  if (phase < 0.81) return "Last Quarter";
+  return "Waning Crescent";
+}
+
 export default function PrayerNav({ initialData }: { initialData: PrayerData }) {
   const today = toKey(new Date());
   const [dateKey, setDateKey] = useState(today);
@@ -74,6 +126,15 @@ export default function PrayerNav({ initialData }: { initialData: PrayerData }) 
   const isToday = isSameDay(dateKey, today);
   const canGoBack = !data.range || dateKey > data.range.min;
   const canGoForward = !data.range || dateKey < data.range.max;
+
+  const astro = data.weather?.astro;
+  const sunTimes = astro && {
+    sunrise: formatTime(astro.sunrise),
+    sunset: formatTime(astro.sunset),
+    moonPhase: moonPhaseName(astro.moonPhase),
+    moonrise: formatTime(astro.moonrise),
+    moonset: formatTime(astro.moonset),
+  };
 
   const fetchDate = useCallback(async (key: string) => {
     abortRef.current?.abort();
@@ -160,19 +221,65 @@ export default function PrayerNav({ initialData }: { initialData: PrayerData }) 
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-sm text-muted">
             <span className="flex items-center gap-1.5">
               <CalendarDays size={13} strokeWidth={1.5} />
-              {formatDateDisplay(data.date)} &middot; {data.hijri} AH
+              {formatDateDisplay(data.date)} &middot; {formatHijri(data.hijri)} AH
             </span>
             <span className="flex items-center gap-1.5">
               <MapPin size={13} strokeWidth={1.5} />
               Al Ain
             </span>
-            {data.weather && (
-              <span className="flex items-center gap-1.5">
-                <Cloud size={13} strokeWidth={1.5} />
-                {data.weather.temp}&deg;C &middot; {data.weather.humidity}% humidity
-              </span>
-            )}
           </div>
+
+          {/* Weather + Sun + Moon */}
+          {(data.weather || sunTimes) && (
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 divide-y divide-border/60 sm:divide-y-0 sm:divide-x border border-border/60">
+              {data.weather && (
+                <div className="p-4 flex flex-col gap-1">
+                  <span className="flex items-center gap-1.5 text-xs text-muted uppercase tracking-wide">
+                    <Cloud size={13} strokeWidth={1.5} />
+                    Weather
+                  </span>
+                  <span className="text-lg font-medium tabular-nums">
+                    {data.weather.temp}&deg;C
+                  </span>
+                  <span className="text-xs text-muted">{data.weather.humidity}% humidity</span>
+                </div>
+              )}
+
+              {sunTimes && (
+                <div className="p-4 flex flex-col gap-1">
+                  <span className="flex items-center gap-1.5 text-xs text-muted uppercase tracking-wide">
+                    <Sunrise size={13} strokeWidth={1.5} />
+                    Sun
+                  </span>
+                  <span className="text-lg font-medium tabular-nums">
+                    <span className="text-fg/90">{sunTimes.sunrise ?? "—"}</span>
+                    <span className="text-muted"> · </span>
+                    <span className="text-fg/90">{sunTimes.sunset ?? "—"}</span>
+                  </span>
+                  <span className="text-xs text-muted">Rise / Set</span>
+                </div>
+              )}
+
+              {sunTimes && (
+                <div className="p-4 flex flex-col gap-1">
+                  <span className="flex items-center gap-1.5 text-xs text-muted uppercase tracking-wide">
+                    <Moon size={13} strokeWidth={1.5} />
+                    Moon
+                  </span>
+                  <span className="text-lg font-medium">
+                    {sunTimes.moonPhase ?? "—"}
+                  </span>
+                  <span className="text-xs text-muted">
+                    {sunTimes.moonrise && sunTimes.moonset ? (
+                      <>Rises {sunTimes.moonrise} · Sets {sunTimes.moonset}</>
+                    ) : (
+                      <>&nbsp;</>
+                    )}
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Next Prayer - always today's */}
@@ -214,13 +321,13 @@ export default function PrayerNav({ initialData }: { initialData: PrayerData }) 
                 }`}
               >
                 <span
-                  className={`text-base ${isCurrent ? "font-semibold" : "font-medium"}`}
+                  className={`text-base ${isCurrent ? "font-semibold underline underline-offset-4 decoration-1" : "font-medium"}`}
                 >
                   {p.name}
                 </span>
                 <span
                   className={`text-lg tabular-nums ${
-                    isCurrent ? "font-semibold" : "font-medium text-muted"
+                    isCurrent ? "font-semibold underline underline-offset-4 decoration-1" : "font-medium text-muted"
                   }`}
                 >
                   {p.time}
